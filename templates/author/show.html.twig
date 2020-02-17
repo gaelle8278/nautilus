@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    
+    <main id="main">
+    	<section class="section-bg">
+    		<div class="container">
+    		    {% for message in app.flashes('info') %}
+        			<p>Message flash : {{ message }}</p>
+                {% endfor %}
+    		    <p>{{ author.firstname }}</p>
+    		    <p>{{ author.lastname }}</p>
+    		</div>
+    	</section>
+    </main>
+{% endblock %}
