@@ -33,5 +33,24 @@ class BookRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
     
+    /**
+     * Returns a list of Books objects whose authors' lastname match the specified term 
+     * @param string $lastname
+     * @return mixed|\Doctrine\DBAL\Driver\Statement|array|NULL
+     */
+    public function findBookByLikeAuhtorLastname(string $lastname) : array {
+        $entityManager = $this->getEntityManager();
+        
+        $query = $entityManager->createQuery('
+            SELECT b, a 
+            FROM App\Entity\Book b
+            INNER join b.authors a
+            WHERE a.lastname LIKE :lastname
+       ')->setParameter('lastname', '%'.$lastname.'%');
+        
+        
+        return $query->getResult();
+    }
+    
     
 }

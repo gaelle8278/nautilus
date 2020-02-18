@@ -16,7 +16,7 @@ class AuthorController extends AbstractController
      */
     public function create() : RedirectResponse
     {
-        $entityManager = $this->getDoctrine()->getManager();
+        /*$entityManager = $this->getDoctrine()->getManager();
         
         $author = new Author();
         $author->setFirstname("Christian");
@@ -31,7 +31,7 @@ class AuthorController extends AbstractController
         
         return $this->redirectToRoute('show_author', [
             'id' => $author->getId()
-        ]);
+        ]);*/
     }
     
     
@@ -40,8 +40,6 @@ class AuthorController extends AbstractController
      */
     public function show(Author $author) : Response
     {
-       
-        
         return $this->render('author/show.html.twig',
                                  ['author' => $author]);
     }

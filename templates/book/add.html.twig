@@ -1,0 +1,37 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    
+    <main id="main">
+    	<section class="section-bg">
+    		<div class="container">
+    		    {% for message in app.flashes('info') %}
+        			<p>Message flash : {{ message }}</p>
+                {% endfor %}
+                <div>
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                    	<div>
+                            {{ form_row(form.title) }}
+						</div>
+						
+						<div>
+                            {{ form_row(form.authors) }}
+						</div>
+						
+						<div class="form-group">
+        					 {{ form_label(form.editor.name, "Editeur") }}
+                             {{ form_widget(form.editor.name) }}
+    
+        					<small>{{ form_help(form.editor.name) }}</small>
+    
+                            <div class="form-error">
+                                {{ form_errors(form.editor.name) }}
+                            </div>
+						</div>
+                        
+                    {{ form_end(form) }}
+    		    </div>
+    		</div>
+    	</section>
+    </main>
+{% endblock %}

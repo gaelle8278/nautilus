@@ -1,0 +1,25 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    
+    <main id="main">
+    	<section class="section-bg">
+    		<div class="container">
+    		    {% for message in app.flashes('info') %}
+        			<p>Message flash : {{ message }}</p>
+                {% endfor %}
+                <div>
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                    	{{ form_widget(form) }}
+                    {{ form_end(form) }}
+    		    </div>
+    		    
+    		    <div>
+    		    {% for book in books %}
+ 					<p>{{ book.title }}</p>
+                {% endfor %}
+    		    </div>
+    		</div>
+    	</section>
+    </main>
+{% endblock %}

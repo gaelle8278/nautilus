@@ -27,6 +27,9 @@ class Author
      * @ORM\Column(type="string", length=255)
      */
     private $lastname;
+    
+    
+    
 
     public function getId(): ?int
     {
@@ -55,6 +58,12 @@ class Author
         $this->lastname = $lastname;
 
         return $this;
+    }
+    
+    
+    public function getFullname(): ?string
+    {
+        return $this->lastname.' '.$this->firstname;
     }
 
     
