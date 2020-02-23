@@ -19,18 +19,33 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
-    public function findWithEditor($bookId)
+    public function findWithAllInfos($bookId)
     {
         $entityManager = $this->getEntityManager();
         
         $query = $entityManager->createQuery(
-            'SELECT b, e
+            'SELECT b, e, a
         FROM App\Entity\Book b
         INNER JOIN b.editor e
+        INNER JOIN b.authors a
         WHERE b.id = :id'
             )->setParameter('id', $bookId);
             
         return $query->getOneOrNullResult();
+    }
+    
+    public function findAllWithAllInfos()
+    {
+        $entityManager = $this->getEntityManager();
+        
+        $query = $entityManager->createQuery(
+            'SELECT b, e, a
+        FROM App\Entity\Book b
+        INNER JOIN b.editor e
+        INNER JOIN b.authors a'
+            );
+            
+        return $query->getResult();
     }
     
     /**

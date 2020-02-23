@@ -6,7 +6,15 @@
     	<section class="section-bg">
     		<div class="container">
     		    
-    		    <p>{{ book.title }}</p>
+    		    <p><span>Titre : </span>{{ book.title }}</p>
+    		    <p><span>Editeur: </span>{{ book.editor.name }}</p>
+    		    <div><span>Auteurs : </span>
+    		    <ul>
+    		        {%  for author in book.authors %}
+    		    		<li>{{  author.firstname ~ ' ' ~ author.lastname }}</li>
+    		        {%  endfor  %}
+    		    </ul>
+    		    </div>
     		</div>
     	</section>
     </main>

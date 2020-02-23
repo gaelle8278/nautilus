@@ -34,6 +34,7 @@ class Book
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Author")
+     * @Assert\NotBlank
      */
     private $authors;
 
@@ -96,6 +97,8 @@ class Book
 
         return $this;
     }
+    
+    
 
  
 }

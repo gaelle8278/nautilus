@@ -19,18 +19,19 @@
 						</div>
 						
 						<div class="form-group">
-        					 {{ form_label(form.editor.name, "Editeur") }}
-                             {{ form_widget(form.editor.name) }}
+        					 {{ form_label(form.editor, "Editeur") }}
+                             {{ form_widget(form.editor) }}
     
-        					<small>{{ form_help(form.editor.name) }}</small>
+        					<small>{{ form_help(form.editor) }}</small>
     
                             <div class="form-error">
-                                {{ form_errors(form.editor.name) }}
+                                {{ form_errors(form.editor) }}
                             </div>
 						</div>
                         
                     {{ form_end(form) }}
     		    </div>
+    		    <div><a href="{{ path('list_book') }}" class="btn btn-success" >Retour à la liste des livres</a></div>
     		</div>
     	</section>
     </main>

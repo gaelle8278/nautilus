@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    
+    <main id="main">
+    	<section class="section-bg">
+    		<div class="container">
+    			<div class="text-right"><a href="{{ path('add_book') }}" class="btn btn-primary" >Ajouter un livre</a></div>
+    		    {% for book in books %}
+    		    	<div class="row">
+        				<div class="col col-lg-4">{{ book.title }}</div>
+        				<div class="col col-lg-4">{{ book.editor.name }}</div>
+        				<div class="col col-lg-4">
+        					<ul>
+            		            {%  for author in book.authors %}
+            		    			<li>{{  author.firstname ~ ' ' ~ author.lastname }}</li>
+            		       	    {%  endfor  %}
+    		    			</ul>
+    		    		</div>
+        			</div>
+                {% endfor %}
+                
+    		</div>
+    	</section>
+    </main>
+{% endblock %}
