@@ -1,0 +1,44 @@
+{% if pagination.nbPages > 0 %}
+<nav aria-label="Pages of books list">
+	<ul class="pagination">
+		{% if pagination.page > 1 %}
+		<li class="page-item">
+			<a class="page-link" href="{{ path(pagination.nomRoute, pagination.paramsRoute|merge({'page': 1})) }}">
+				<span aria-hidden="true">&laquo;</span> 
+				<span class="sr-only">Première page</span> 
+			</a>
+		</li>
+		<li class="page-item">
+			<a class="page-link" href="{{ path(pagination.nomRoute, pagination.paramsRoute|merge({'page': pagination.page-1})) }}">
+				<span aria-hidden="true">&lsaquo;</span> 
+				<span class="sr-only">Précédent</span>
+			</a>
+		</li>
+		{% endif %}
+
+		{# Affichage de toutes les pages entre p-4 et p+4 sauf si < 1 ou > nbPages #}
+		{% for p in range(max(pagination.page-4, 1), min(pagination.page+4, pagination.nbPages)) %}
+    		<li class="page-item {% if p == pagination.page %} active {% endif %}">
+    			<a class="page-link" href="{{ path(pagination.nomRoute, pagination.paramsRoute|merge({'page': p})) }}">
+    				{{ p }} <span class="sr-only">(actuelle)</span>
+    			</a>
+    		</li>
+		{% endfor %}
+
+		{% if pagination.page < pagination.nbPages %}
+		<li class="page-item">
+			<a class="page-link" href="{{ path(pagination.nomRoute, pagination.paramsRoute|merge({'page': pagination.page+1})) }}">
+				<span aria-hidden="true">&rsaquo;</span>
+				<span class="sr-only">Suivant</span>
+			</a>
+		</li>
+		<li class="page-item">
+			<a class="page-link" href="{{ path(pagination.nomRoute, pagination.paramsRoute|merge({'page': pagination.nbPages})) }}">
+				<span aria-hidden="true">&raquo; </span>
+				<span class="sr-only">Dernière page</span>
+			</a>
+		</li>
+		{% endif %}
+	</ul>
+</nav>
+{% endif %}

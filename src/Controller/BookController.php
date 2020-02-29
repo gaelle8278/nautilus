@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Form\AuthorType;
 use App\Form\BookType;
+use App\Form\EditorType;
 use App\Entity\Book;
+use App\Entity\Author;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\SearchBookType;
+use App\Entity\Editor;
 
 class BookController extends AbstractController
 {
@@ -79,16 +83,42 @@ class BookController extends AbstractController
     }
     
     /**
-     * @Route("/books", name="list_book")
+     * @Route("/books/{page}", name="list_book", requirements={"page"="\d+"}, methods={"GET"})
      */
-    public function list() : Response
+    public function list(int $page = 1) : Response
     {
-        $books = $this->getDoctrine()->getRepository(Book::class)
-        ->findAllWithAllInfos();
         
+        // get author form
+        $formAuthor = $this->createForm(AuthorType::class, new Author(), [
+            'action' => $this->generateUrl('add_author')
+            
+        ]);
+        
+        // get editor form
+        $formEditor = $this->createForm(EditorType::class, new Editor(), [
+            'action' => $this->generateUrl('add_editor')
+            
+        ]);
+        
+        //get books list
+        $nbBooksByPage = $this->getParameter('app.books.pagination');
+        $books = $this->getDoctrine()->getRepository(Book::class)
+        ->findAllPagined($page, $nbBooksByPage);
+        
+        $pagination = array(
+            'page' => $page,
+            'nbPages' => ceil(count($books) / $nbBooksByPage),
+            'nomRoute' => 'list_book',
+            'paramsRoute' => array()
+        );
         
         return $this->render('book/list.html.twig',
-            ['books' => $books]);
+            [
+                'books' => $books,
+                'pagination' => $pagination,
+                'formAuthor' => $formAuthor->createView(),
+                'formEditor' => $formEditor->createView()
+            ]);
     }
     
     

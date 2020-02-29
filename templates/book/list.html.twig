@@ -5,22 +5,46 @@
     <main id="main">
     	<section class="section-bg">
     		<div class="container">
-    			<div class="text-right"><a href="{{ path('add_book') }}" class="btn btn-primary" >Ajouter un livre</a></div>
-    		    {% for book in books %}
-    		    	<div class="row">
-        				<div class="col col-lg-4">{{ book.title }}</div>
-        				<div class="col col-lg-4">{{ book.editor.name }}</div>
-        				<div class="col col-lg-4">
-        					<ul>
-            		            {%  for author in book.authors %}
-            		    			<li>{{  author.firstname ~ ' ' ~ author.lastname }}</li>
-            		       	    {%  endfor  %}
-    		    			</ul>
-    		    		</div>
-        			</div>
-                {% endfor %}
-                
+    			<div class="row">
+    				<div class="col text-right my-2">
+    					<a href="{{ path('add_editor') }}" class="btn btn-info" data-toggle="modal" data-target="#addEditorModal">Ajouter un éditeur</a>
+    					<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addAuthorModal">Ajouter un auteur</button>
+    					<a href="{{ path('add_book') }}" class="btn btn-primary" >Ajouter un livre</a>
+    				</div>
+    			</div>
+    			
+    			{% if books is not empty %}
+    				<table class="table">
+            		    <thead>
+                            <tr>
+                              <th scope="col">Titre</th>
+                              <th scope="col">Editeur</th>
+                              <th scope="col">Auteurs</th>
+                            </tr>
+                        </thead>
+                    	<tbody>
+        		        {% for book in books %}
+        		    
+        		    		<tr>
+          						<th>{{ book.title }}</th>
+          						<td>{{ book.editor.name }}</td>
+          						<td>
+          							<ul class="list-group">
+                    		            {%  for author in book.authors %}
+                    		    			<li class="list-group-item">{{  author.firstname ~ ' ' ~ author.lastname }}</li>
+                    		       	    {%  endfor  %}
+            		    			</ul>
+          						</td>
+        					</tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {%  endif %}
+                {{ include("_entity_pagination.html.twig") }}
     		</div>
     	</section>
+    	<!--  modals -->
+        {{ include("author/modals/_add.html.twig") }}
+        {{ include("editor/modals/_add.html.twig") }}
     </main>
 {% endblock %}

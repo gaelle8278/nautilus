@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @method Book|null find($id, $lockMode = null, $lockVersion = null)
@@ -50,6 +52,7 @@ class BookRepository extends ServiceEntityRepository
     
     /**
      * Returns a list of Books objects whose authors' lastname match the specified term 
+     * 
      * @param string $lastname
      * @return mixed|\Doctrine\DBAL\Driver\Statement|array|NULL
      */
@@ -65,6 +68,35 @@ class BookRepository extends ServiceEntityRepository
         
         
         return $query->getResult();
+    }
+    
+    /**
+     * Returns list of books according to an offset and a agiven limit 
+     * 
+     * @param int $page             current page
+     * @param int $nbMaxPerPage     number of books to get
+     */
+    public function findAllPagined($page, $nbMaxPerPage) {
+        if (!is_numeric($page) || $page < 1 || !is_numeric($nbMaxPerPage)) {
+            throw new NotFoundHttpException('La page demandée n\'existe pas');
+        }
+        
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT b, e, a
+             FROM App\Entity\Book b
+             INNER JOIN b.editor e
+             INNER JOIN b.authors a'
+        );
+        
+        $offset = ($page - 1) * $nbMaxPerPage;
+        $query->setFirstResult($offset)->setMaxResults($nbMaxPerPage);
+        $paginator = new Paginator($query);
+        
+        if ( ($paginator->count() <= $offset) && $page != 1) {
+            throw new NotFoundHttpException('La page demandée n\'existe pas.'); // page 404, sauf pour la première page
+        }
+        
+        return $paginator;
     }
     
     

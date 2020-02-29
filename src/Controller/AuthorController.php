@@ -4,34 +4,38 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Author;
+use App\Form\AuthorType;
 
 
 class AuthorController extends AbstractController
 {
     /**
-     * @Route("/author/add", name="create_author")
+     * @Route("/author/add", name="add_author", methods={"POST"})
+     *
      */
-    public function create() : RedirectResponse
+    public function save(Request $request) : RedirectResponse
     {
-        /*$entityManager = $this->getDoctrine()->getManager();
-        
+        //form creation
         $author = new Author();
-        $author->setFirstname("Christian");
-        $author->setLastname("JAcq");
+        $form = $this->createForm(AuthorType::class,$author);
         
+        //process form from request
+        $form->handleRequest($request);
         
-        $entityManager->persist($author);
+        //behind the scene isValid() method use Validator component
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($author);
+            $entityManager->flush();
+            
+            
+        }
         
-        $entityManager->flush();
-        
-        $this->addFlash('info', 'Auteur enregistré !');
-        
-        return $this->redirectToRoute('show_author', [
-            'id' => $author->getId()
-        ]);*/
+        return $this->redirectToRoute('list_book');
     }
     
     
